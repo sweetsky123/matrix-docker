@@ -1,11 +1,16 @@
 version: '3'
 services:
+    # Matrix容器
   matrix-synapse:
+      # 镜像地址
     image: "matrixdotorg/synapse:latest"
+      # 容器名称
     container_name: "matrix-synapse"
+      # 异常停止自动重启
     restart: unless-stopped
     ports:
-      - ${MARTRIX_PORT:?error message}:8008
+        # 端口转发
+      - ${MARTRIX_PORT:?error message}:8008 
     volumes:
       - "./data:/data" 
     environment:
@@ -17,13 +22,20 @@ services:
     depends_on:
       - matrix-pg
 
-
+    # Postgres数据库
   matrix-pg:
+      # 镜像地址
     image: postgres:latest
+      # 容器名称
     container_name: matrix-pg
     environment:
+      # 管理员密码
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?error message}  # postgres管理员密码
     volumes:
+        # 持久化数据放置目录
       - ./pgdata:/var/lib/postgresql/data
+        # 脚本目录
       - ./init:/docker-entrypoint-initdb.d
+      # 异常停止自动重启
     restart: unless-stopped
+    

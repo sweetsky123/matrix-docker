@@ -1,5 +1,5 @@
 -- 创建matrix用户并设置密码
-CREATE USER matrix WITH PASSWORD 'zR7Kd5AKb3BE7Y5k';
+CREATE USER matrix WITH PASSWORD 'zR7Kd5AKb3BE7Y5k'; -- 记得要改成你的数据库密码，需要和.env文件中设置的相同
 
 -- 创建使用C排序规则的matrix数据库
 CREATE DATABASE matrix
