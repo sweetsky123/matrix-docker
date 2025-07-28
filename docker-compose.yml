@@ -1,0 +1,29 @@
+version: '3'
+services:
+  matrix-synapse:
+    image: "matrixdotorg/synapse:latest"
+    container_name: "matrix-synapse"
+    restart: unless-stopped
+    ports:
+      - ${MARTRIX_PORT:?error message}:8008
+    volumes:
+      - "./data:/data" 
+    environment:
+      VIRTUAL_HOST: "${SERVICE_URL:?error message}"
+      VIRTUAL_PORT: 8008
+      LETSENCRYPT_HOST: "${SERVICE_URL:?error message}"
+      SYNAPSE_SERVER_NAME: "${SERVICE_URL:?error message}"
+      SYNAPSE_REPORT_STATS: "yes"
+    depends_on:
+      - matrix-pg
+
+
+  matrix-pg:
+    image: postgres:latest
+    container_name: matrix-pg
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?error message}  # postgres管理员密码
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+    restart: unless-stopped
